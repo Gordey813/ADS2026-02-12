@@ -38,9 +38,15 @@ public class B_CountSort {
         //читаем точки
         for (int i = 0; i < n; i++) {
             points[i] = scanner.nextInt();
+            buf[points[i]]++;
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
-
+        int num = 0;
+        for (int j = 0; j<10; j++) {
+            for (int i = 0; i<buf[j]; i++) {
+                points[num++] = j;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;

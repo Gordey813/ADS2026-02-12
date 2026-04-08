@@ -40,6 +40,42 @@ public class C_QSortOptimized {
         }
     }
 
+    static void quickSort (Segment[] a, int l, int r){
+        while (l<r){
+            int m = (int) (Math.random()*(r-l+1)+l);
+
+            int cur = l;
+            int num = r;
+
+            Segment temp = a[r];
+            a[r] = a[m];
+            a[m] = temp;
+
+            for (int i =l; i<num; i++){
+                if (a[i].start<a[r].start){
+                    temp = a[i];
+                    a[i] = a[cur];
+                    a[cur++] = temp;
+                } else if (a[i].start==a[r].start){ //3-partition
+                    num--;
+                    a[i] = a[num];
+                    a[num] = a[r];
+                }
+            }
+
+            for (int i = 0; i<=(r-num); i++){
+                temp = a[r-i];
+                a[r-i] = a[cur];
+                a[cur++] = temp;
+            }
+
+
+            quickSort(a, l, cur-(r-num+2));
+            //qSort(a, m+1, r);
+            l = cur;
+        }
+    }
+
     int[] getAccessory2(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
         Scanner scanner = new Scanner(stream);
@@ -63,7 +99,31 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        quickSort(segments, 0, segments.length-1);
 
+        int l, r, med;
+        for(int k = 0; k < points.length; k++){
+            l=0;
+            r=segments.length;
+
+            while (l<r){
+                med=(l+r)/2;
+                if (segments[med].start<points[k]){
+                    l=med+1;
+                }else if (segments[med].start>points[k]){
+                    r=med-1;
+                }else{
+                    r=med;
+                    l=med;
+                }
+            }
+            if (r>=segments.length) {r=segments.length-1;}
+            for (int i = 0; i<=r; i++){
+                if (segments[i].stop>=points[k]){
+                    result[k]++;
+                }
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
